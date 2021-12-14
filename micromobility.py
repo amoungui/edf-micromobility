@@ -23,7 +23,7 @@ def load_data(nrows):
 	df = pd.DataFrame(df[1:], columns=df[0])	
 	return df.head(nrows) 	
 
-def move_mode(dfload_data(1000)):
+def move_mode(df)
 	df = df.loc[:, ['Mode déplacement', 'Nombre de véhicules']]
 	data = df.groupby('Mode déplacement')['Nombre de véhicules'].agg([sum])
 	return data
