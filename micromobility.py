@@ -23,8 +23,14 @@ def load_data(nrows):
 	df = pd.DataFrame(df[1:], columns=df[0])	
 	return df.head(nrows) 	
 
+def move_mode(dfload_data(1000)):
+	df = df.loc[:, ['Mode déplacement', 'Nombre de véhicules']]
+	data = df.groupby('Mode déplacement')['Nombre de véhicules'].agg([sum])
+	return data
+
+
 st.write(load_data(1000))
 st.write("\n\n")
 
-#st.area_chart(load_data(1000))
+st.area_chart(move_mode(load_data(1000)))
 
