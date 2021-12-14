@@ -11,7 +11,7 @@ st.write("\n\n")
 
 filename = 'data/comptage-multimodal-comptages_trottinettes_binary.xlsb'
 
-@st.cache
+@st.cache(allow_output_mutation=True)
 def load_data(nrows):
 	df = []
 
@@ -20,10 +20,11 @@ def load_data(nrows):
 	        for row in sheet.rows():
 	            df.append([item.v for item in row])
 
-	df = pd.DataFrame(df[1:], columns=df[0])	
-	return df.head(nrows) 	
+	df = pd.DataFrame(df[1:], columns=df[0])
+	data = df	
+	return data.head(nrows) 	
 
-#data = load_data(1000)
+data = load_data(1000)
 
 def move_mode(df):
 	data = df.loc[:, ['Mode déplacement', 'Nombre de véhicules']]
@@ -39,7 +40,7 @@ def move_mode(df):
 	d = data.groupby('Mode déplacement')['Mode déplacement'].value_counts()
 	return d
 
-dt = move_mode(load_data(1000))
+dt = move_mode(data)
 labels = ['2 roues motorisées', 'Trottinettes', 'Vélos', 'autobus/autocars']
 
 def plotly_charts(df, labels):
@@ -64,6 +65,6 @@ def plotly_charts(df, labels):
 
 st.write("\n\n")
 st.write(plotly_charts(dt, labels))
-#st.write(dt)
+st.write(data)
 st.write("\n\n")
 
