@@ -63,8 +63,27 @@ def plotly_charts(df, labels):
 
 	return fig
 
-st.write("\n\n")
-st.write(plotly_charts(dt, labels))
-st.write(data)
-st.write("\n\n")
+def new_data(df):
+	data = df.loc[:, ['Mode déplacement', 'Nombre de véhicules']]
+	data['Mode déplacement'] = data['Mode déplacement'].map({
+														'2 roues motorisées':'2 roues motorisées',
+	                            						'Autobus et autocars':'autobus/autocars',
+	                            						'Trottinettes':'Trottinettes',
+	                            						'Trottinettes + vélos':'Trottinettes',
+	                            						'Véhicule lourds > 3.5t':'Véhicule lourds > 3.5t',
+	                            						'Véhicule légers < 3.5t':'Véhicule légers < 3.5t',
+	                            						'Vélos':'Vélos'},
+	                            						na_action=None)
+	d = data['Mode déplacement'].value_counts()
+	return d
 
+st.write("\n\n")
+col1, col2 = st.columns(2)
+
+with col1:
+    st.header("A cat")
+    st.bar_chart(new_data(data))
+
+with col2:
+    st.header("A dog")
+    st.write(plotly_charts(dt, labels))
