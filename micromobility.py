@@ -26,5 +26,5 @@ def load_data(nrows):
 st.write(load_data(1000))
 st.write("\n\n")
 
-st.area_chart(load_data(1000))
+#st.area_chart(load_data(1000))
 
