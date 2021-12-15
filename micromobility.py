@@ -7,9 +7,12 @@ import matplotlib.pyplot as plt
 #modification taille de la page
 st.set_page_config(layout="wide")
 
-st.title('EDF taux d\'utilisation/occupation de trottinettes ...')
+st.title('EDF: Cas d\'étude de faisabilité du projet MicroMobility')
+st.subheader('Etude du taux d\'utilisation/occupation de trottinettes ...')
 st.write("\n\n")
+st.text()
 
+st.write("\n\n")
 filename = 'data/comptage-multimodal-comptages_trottinettes_binary.xlsb'
 
 @st.cache(allow_output_mutation=True)
@@ -83,7 +86,7 @@ def load_map_data(df):
 	l = []
 	data = df
 	l = list(data['Coordonnées Géo'].astype(str).str.split(','))
-	return l #data['Coordonnées Géo']
+	return l
 		
 def laod_map_chart(l: list):
 	# Map to show the physical locations of trottinettes.
@@ -96,8 +99,8 @@ def laod_map_chart(l: list):
 	data = {'lat':lat, 
 	        'lon':lon
 	} 
-	df['lat'].replace('�',0, regex=True).astype(float)
-	df['lon'].replace('�',0, regex=True).astype(float)
+	df['lat'].replace('.', '.', regex=True).astype(float)
+	df['lon'].replace('.', '.', regex=True).astype(float)
 	df = pd.DataFrame(data)
 	return df
 
