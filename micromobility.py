@@ -98,10 +98,10 @@ def laod_map_chart(l: list):
 	data = {'lat':lat, 
 	        'lon':lon
 	} 
-	df['lat'].replace('.', '.', regex=True).astype(float)
-	df['lon'].replace('.', '.', regex=True).astype(float)
 	df = pd.DataFrame(data)
-	return df
+	#df['lat'].replace('.', '.', regex=True).astype(float)
+	#df['lon'].replace('.', '.', regex=True).astype(float)	
+	return df.dtype
 
 s = load_map_data(data)
 #st.write(float(s[0][0])) # 
@@ -120,33 +120,3 @@ with col2:
 st.write("\n\n")
 st.write(laod_map_chart(load_map_data(data)))
 
-df = laod_map_chart(load_map_data(data))
-midpoint = (np.average(df["lat"]), np.average(df["lon"]))
-st.pydeck_chart(pdk.Deck(
-     map_style='mapbox://styles/mapbox/light-v9',
-     initial_view_state=pdk.ViewState(
-         latitude=midpoint[0],
-         longitude=midpoint[1],
-         zoom=11,
-         pitch=50,
-     ),
-     layers=[
-         pdk.Layer(
-            'HexagonLayer',
-            data=df,
-            get_position='[lon, lat]',
-            radius=200,
-            elevation_scale=4,
-            elevation_range=[0, 1000],
-            pickable=True,
-            extruded=True,
-         ),
-         pdk.Layer(
-             'ScatterplotLayer',
-             data=df,
-             get_position='[lon, lat]',
-             get_color='[200, 30, 0, 160]',
-             get_radius=200,
-         ),
-     ],
- ))
