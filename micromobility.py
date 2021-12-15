@@ -10,7 +10,7 @@ st.set_page_config(layout="wide")
 st.title('EDF: Cas d\'étude de faisabilité du projet MicroMobility')
 st.subheader('Etude du taux d\'utilisation/occupation de trottinettes ...')
 st.write("\n\n")
-st.text()
+st.subheader()
 
 st.write("\n\n")
 filename = 'data/comptage-multimodal-comptages_trottinettes_binary.xlsb'
