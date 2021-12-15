@@ -77,13 +77,20 @@ def new_data(df):
 	d = data['Mode déplacement'].value_counts()
 	return d
 
+
+def load_map_data(df):
+	df['lat'], df['lon'] = df['Coordonnées Géo'].split(',', expand=True)
+	return df
+		
+
+st.write(load_map_data(data)) # 
 st.write("\n\n")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.header("A cat")
+    st.header(" ")
     st.bar_chart(new_data(data))
 
 with col2:
-    st.header("A dog")
+    st.header(" ")
     st.write(plotly_charts(dt, labels))
