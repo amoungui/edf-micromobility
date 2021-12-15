@@ -79,8 +79,10 @@ def new_data(df):
 
 
 def load_map_data(df):
-	df['lat'], df['lon'] = df['Coordonnées Géo'].split(',', expand=True)
-	return df
+	data = df
+	data['Coordonnées Géo'].astype(str)
+	data['Coordonnées Géo'].str.split(',')
+	return data['Coordonnées Géo']
 		
 
 st.write(load_map_data(data)) # 
