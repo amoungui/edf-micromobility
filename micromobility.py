@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 from pyxlsb import open_workbook as open_xlsb
 import matplotlib.pyplot as plt
 
@@ -79,39 +80,31 @@ def new_data(df):
 
 
 def load_map_data(df):
+	l = []
 	data = df
-	data['Coordonnées Géo'].astype(str)
-	data['Coordonnées Géo'].str.split(',')
-	return data['Coordonnées Géo'].copy()
+	l = list(data['Coordonnées Géo'].astype(str).str.split(','))
+	return l #data['Coordonnées Géo']
 		
-def laod_map_chart(df):
+def laod_map_chart(l: list):
 	# Map to show the physical locations of trottinettes.
-	midpoint = (np.average(df['Coordonnées Géo'][0]), np.average(df['Coordonnées Géo'][1]))
+	lat = []
+	lon = []
+	for i, ob in enumerate(l):
+		lat.append(l[i][0])
+		lon.append(l[i][-1])
+	
+	data = {'lat':lat, 
+	        'lon':lon
+	} 
+	df['lat'].replace('�',0, regex=True).astype(float)
+	df['lon'].replace('�',0, regex=True).astype(float)
+	df = pd.DataFrame(data)
+	return df
 
-	return st.deck_gl_chart(
-	    viewport={
-	        "latitude": midpoint[0],
-	        "longitude": midpoint[1],
-	        "zoom": 11,
-	        "pitch": 40,
-	    },
-	    layers=[
-	        {
-	            "type": "HexagonLayer",
-	            "data": df,
-	            "radius": 80,
-	            "elevationScale": 4,
-	            "elevationRange": [0, 1000],
-	            "pickable": True,
-	            "extruded": True,
-	        }
-	    ],
-	)	
-
-
-
-st.write(load_map_data(data)) # 
+s = load_map_data(data)
+#st.write(float(s[0][0])) # 
 st.write("\n\n")
+
 col1, col2 = st.columns(2)
 
 with col1:
@@ -124,3 +117,34 @@ with col2:
 
 st.write("\n\n")
 st.write(laod_map_chart(load_map_data(data)))
+
+df = laod_map_chart(load_map_data(data))
+midpoint = (np.average(df["lat"]), np.average(df["lon"]))
+st.pydeck_chart(pdk.Deck(
+     map_style='mapbox://styles/mapbox/light-v9',
+     initial_view_state=pdk.ViewState(
+         latitude=midpoint[0],
+         longitude=midpoint[1],
+         zoom=11,
+         pitch=50,
+     ),
+     layers=[
+         pdk.Layer(
+            'HexagonLayer',
+            data=df,
+            get_position='[lon, lat]',
+            radius=200,
+            elevation_scale=4,
+            elevation_range=[0, 1000],
+            pickable=True,
+            extruded=True,
+         ),
+         pdk.Layer(
+             'ScatterplotLayer',
+             data=df,
+             get_position='[lon, lat]',
+             get_color='[200, 30, 0, 160]',
+             get_radius=200,
+         ),
+     ],
+ ))
