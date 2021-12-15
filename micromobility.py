@@ -21,7 +21,7 @@ def load_data(nrows):
 	            df.append([item.v for item in row])
 
 	df = pd.DataFrame(df[1:], columns=df[0])
-	data = df	
+	data = df.copy()	
 	return data.head(nrows) 	
 
 data = load_data(1000)
@@ -38,7 +38,7 @@ def move_mode(df):
 	                            						'Vélos':'Vélos'},
 	                            						na_action=None)
 	d = data.groupby('Mode déplacement')['Mode déplacement'].value_counts()
-	return d
+	return d.copy()
 
 dt = move_mode(data)
 labels = ['2 roues motorisées', 'Trottinettes', 'Vélos', 'autobus/autocars']
@@ -82,8 +82,33 @@ def load_map_data(df):
 	data = df
 	data['Coordonnées Géo'].astype(str)
 	data['Coordonnées Géo'].str.split(',')
-	return data['Coordonnées Géo']
+	return data['Coordonnées Géo'].copy()
 		
+def laod_map_chart(df):
+	# Map to show the physical locations of trottinettes.
+	midpoint = (np.average(df['Coordonnées Géo'][0]), np.average(df['Coordonnées Géo'][1]))
+
+	return st.deck_gl_chart(
+	    viewport={
+	        "latitude": midpoint[0],
+	        "longitude": midpoint[1],
+	        "zoom": 11,
+	        "pitch": 40,
+	    },
+	    layers=[
+	        {
+	            "type": "HexagonLayer",
+	            "data": df,
+	            "radius": 80,
+	            "elevationScale": 4,
+	            "elevationRange": [0, 1000],
+	            "pickable": True,
+	            "extruded": True,
+	        }
+	    ],
+	)	
+
+
 
 st.write(load_map_data(data)) # 
 st.write("\n\n")
@@ -96,3 +121,6 @@ with col1:
 with col2:
     st.header(" ")
     st.write(plotly_charts(dt, labels))
+
+st.write("\n\n")
+st.write(laod_map_chart(load_map_data(data)))
