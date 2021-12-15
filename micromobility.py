@@ -102,7 +102,7 @@ def laod_map_chart(l: list):
 	df = pd.DataFrame(data)
 	#df['lat'].replace('.', '.', regex=True).astype(float)
 	#df['lon'].replace('.', '.', regex=True).astype(float)	
-	return df.dtype
+	return df.info()
 
 s = load_map_data(data)
 #st.write(float(s[0][0])) # 
