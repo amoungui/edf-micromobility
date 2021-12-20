@@ -89,7 +89,7 @@ def load_map_data(df):
 	return l
 		
 
-def data_for_map_chart(l: list):
+def laod_map_chart(l: list):
 	# Map to show the physical locations of trottinettes.
 	lat = []
 	lon = []
@@ -122,8 +122,8 @@ with col2:
 st.write("\n\n")
 st.subheader('représentation géo spatial des lieux où l\'on utilise le plus de mobilettes')
 
-df_map = data_for_map_chart(load_map_data(data))
-midpoint = (np.average(df_map["lat"]), np.average(df_map["lon"]))
+df = laod_map_chart(load_map_data(data))
+midpoint = (np.average(df["lat"]), np.average(df["lon"]))
 st.pydeck_chart(pdk.Deck(
      map_style='mapbox://styles/mapbox/light-v9',
      initial_view_state=pdk.ViewState(
@@ -135,7 +135,7 @@ st.pydeck_chart(pdk.Deck(
      layers=[
          pdk.Layer(
             'HexagonLayer',
-            data=df_map,
+            data=df,
             get_position='[lon, lat]',
             radius=200,
             elevation_scale=4,
@@ -145,10 +145,10 @@ st.pydeck_chart(pdk.Deck(
          ),
          pdk.Layer(
              'ScatterplotLayer',
-             data=df_map,
+             data=df,
              get_position='[lon, lat]',
              get_color='[200, 30, 0, 160]',
              get_radius=200,
          ),
      ],
-))
+ ))
