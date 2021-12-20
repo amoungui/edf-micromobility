@@ -16,7 +16,7 @@ st.write("\n\n")
 filename = 'data/comptage-multimodal-comptages_trottinettes_binary.xlsb'
 
 @st.cache(allow_output_mutation=True)
-def load_data(nrows):
+def load_data():
 	df = []
 
 	with open_xlsb(filename) as wb:
@@ -26,9 +26,9 @@ def load_data(nrows):
 
 	df = pd.DataFrame(df[1:], columns=df[0])
 	data = df.copy()	
-	return data.head(nrows) 	
+	return data 	
 
-data = load_data(1000)
+data = load_data()
 
 def move_mode(df):
 	data = df.loc[:, ['Mode déplacement', 'Nombre de véhicules']]
@@ -100,8 +100,8 @@ def laod_map_chart(l: list):
 	        'lon':lon
 	} 
 	df = pd.DataFrame(data)
-	#df['lat'].replace('.', '.', regex=True).astype(float)
-	#df['lon'].replace('.', '.', regex=True).astype(float)	
+	df['lat'].str.strip().astype(float)
+	df['lon'].str.strip().astype(float)	
 	return df.info()
 
 s = load_map_data(data)
