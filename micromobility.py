@@ -105,39 +105,8 @@ def data_for_map_chart(l: list):
 	df['lon'].str.strip().replace('None', 0).astype(float)	
 	return df
 
-def pyDeck_chart(data):
-	midpoint = (np.average(data["lat"]), np.average(data["lon"]))
-	fig = st.pydeck_chart(pdk.Deck(
-	     map_style='mapbox://styles/mapbox/light-v9',
-	     initial_view_state=pdk.ViewState(
-	         latitude=midpoint[0],
-	         longitude=midpoint[1],
-	         zoom=11,
-	         pitch=50,
-	     ),
-	     layers=[
-	         pdk.Layer(
-	            'HexagonLayer',
-	            data=data,
-	            get_position='[lon, lat]',
-	            radius=200,
-	            elevation_scale=4,
-	            elevation_range=[0, 1000],
-	            pickable=True,
-	            extruded=True,
-	         ),
-	         pdk.Layer(
-	             'ScatterplotLayer',
-	             data=data,
-	             get_position='[lon, lat]',
-	             get_color='[200, 30, 0, 160]',
-	             get_radius=200,
-	         ),
-	     ],
-	 ))
-
-	return fig
-
+s = load_map_data(data)
+#st.write(float(s[0][0])) # 
 st.write("\n\n")
 
 col1, col2 = st.columns(2)
@@ -152,5 +121,34 @@ with col2:
 
 st.write("\n\n")
 st.subheader('représentation géo spatial des lieux où l\'on utilise le plus de mobilettes')
-st.write(pyDeck_chart(data_for_map_chart(load_map_data(data))))
 
+df_map = data_for_map_chart(load_map_data(data))
+midpoint = (np.average(df_map["lat"]), np.average(df_map["lon"]))
+st.pydeck_chart(pdk.Deck(
+     map_style='mapbox://styles/mapbox/light-v9',
+     initial_view_state=pdk.ViewState(
+         latitude=midpoint[0],
+         longitude=midpoint[1],
+         zoom=11,
+         pitch=50,
+     ),
+     layers=[
+         pdk.Layer(
+            'HexagonLayer',
+            data=df_map,
+            get_position='[lon, lat]',
+            radius=200,
+            elevation_scale=4,
+            elevation_range=[0, 1000],
+            pickable=True,
+            extruded=True,
+         ),
+         pdk.Layer(
+             'ScatterplotLayer',
+             data=df_map,
+             get_position='[lon, lat]',
+             get_color='[200, 30, 0, 160]',
+             get_radius=200,
+         ),
+     ],
+))
