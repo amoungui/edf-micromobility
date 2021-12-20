@@ -100,9 +100,9 @@ def laod_map_chart(l: list):
 	        'lon':lon
 	} 
 	df = pd.DataFrame(data)
-	df['lat'].str.strip().astype(float)
-	df['lon'].str.strip().astype(float)	
-	return df.info()
+	df['lat'].str.strip().replace('None', 0).astype(float)
+	df['lon'].str.strip().replace('None', 0).astype(float)	
+	return df
 
 s = load_map_data(data)
 #st.write(float(s[0][0])) # 
