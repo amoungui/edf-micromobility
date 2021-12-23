@@ -121,4 +121,4 @@ with col2:
 
 st.write("\n\n")
 st.subheader('représentation géo spatial des lieux où l\'on utilise le plus de mobilettes')
-st.map(laod_map_chart(load_map_data(data)))
+st.write(laod_map_chart(load_map_data(data)))
