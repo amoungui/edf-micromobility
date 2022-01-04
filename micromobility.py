@@ -130,7 +130,7 @@ with col3:
 	st.write(laod_map_chart(load_map_data(data)))
 
 with col4:
-	df = laod_map_chart(load_map_data(data))
+	df = laod_map_chart(load_map_data(data)).head(738842)
 	# Map to show the physical locations of trottinettes.
 	midpoint = (np.average(df['lat']), np.average(df['lon']))
 	st.pydeck_chart(pdk.Deck(
