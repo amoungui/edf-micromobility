@@ -129,26 +129,33 @@ with col3:
 	st.write(laod_map_chart(load_map_data(data)))
 
 with col4:
-	my_data = laod_map_chart(load_map_data(data))
- 
-	# Map to show the physical locations of trottinettes.
-	midpoint = (np.average(my_data['lat']), np.average(my_data['lon']))
-	st.deck_gl_chart(
-		viewport={
-			"latitude": midpoint[0],
-			"longitude": midpoint[1],
-			"zoom": 11,
-			"pitch": 40,
-		},
+	df = laod_map_chart(load_map_data(data))
+	midpoint = (np.average(df['lat']), np.average(df['lon']))
+	st.pydeck_chart(pdk.Deck(
+		map_style='mapbox://styles/mapbox/light-v9',
+		initial_view_state=pdk.ViewState(
+			latitude=midpoint[0],
+			longitude=midpoint[1],
+			zoom=11,
+			pitch=50,
+		),
 		layers=[
-			{
-				"type": "HexagonLayer",
-				"data": my_data,
-				"radius": 80,
-				"elevationScale": 4,
-				"elevationRange": [0, 1000],
-				"pickable": True,
-				"extruded": True,
-			}
+			pdk.Layer(
+				'HexagonLayer',
+				data=df,
+				get_position='[lon, lat]',
+				radius=200,
+				elevation_scale=4,
+				elevation_range=[0, 1000],
+				pickable=True,
+				extruded=True,
+			),
+			pdk.Layer(
+				'ScatterplotLayer',
+				data=df,
+				get_position='[lon, lat]',
+				get_color='[200, 30, 0, 160]',
+				get_radius=200,
+			),
 		],
-	)
+	))
