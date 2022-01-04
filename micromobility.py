@@ -20,12 +20,12 @@ def load_data():
 	df = []
 
 	with open_xlsb(filename) as wb:
-	    with wb.get_sheet(1) as sheet:
-	        for row in sheet.rows():
-	            df.append([item.v for item in row])
-
+		with wb.get_sheet(1) as sheet:
+			for row in sheet.rows():
+				df.append([item.v for item in row])
+				
 	df = pd.DataFrame(df[1:], columns=df[0])
-	data = df.copy()	
+	data = df.copy()		
 	return data 	
 
 data = load_data()
@@ -121,4 +121,34 @@ with col2:
 
 st.write("\n\n")
 st.subheader('représentation géo spatial des lieux où l\'on utilise le plus de mobilettes')
-st.map(laod_map_chart(load_map_data(data)))
+st.write("\n\n")
+
+col3, col4 = st.columns(2)
+
+with col3:
+	st.write(laod_map_chart(load_map_data(data)))
+
+with col4:
+	my_data = laod_map_chart(load_map_data(data))
+ 
+	# Map to show the physical locations of trottinettes.
+	midpoint = (np.average(my_data['lat']), np.average(my_data['lon']))
+	st.deck_gl_chart(
+		viewport={
+			"latitude": midpoint[0],
+			"longitude": midpoint[1],
+			"zoom": 11,
+			"pitch": 40,
+		},
+		layers=[
+			{
+				"type": "HexagonLayer",
+				"data": my_data,
+				"radius": 80,
+				"elevationScale": 4,
+				"elevationRange": [0, 1000],
+				"pickable": True,
+				"extruded": True,
+			}
+		],
+	)
