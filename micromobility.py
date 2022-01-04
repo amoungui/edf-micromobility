@@ -134,16 +134,16 @@ with col4:
  
 #df = laod_map_chart(load_map_data(data)).head(738842)
 # Map to show the physical locations of trottinettes.
-#df = pd.DataFrame(
-#    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
-#    columns=['lat', 'lon'])
+	df = pd.DataFrame(
+		np.random.randn(10000, 2) / [50, 50] + [2.3522219, 48.856614],
+		columns=['lat', 'lon'])
 
-	df = laod_map_chart(load_map_data(data)).head(1000)
+	#df = laod_map_chart(load_map_data(data)).head(1000)
 	st.pydeck_chart(pdk.Deck(
 		map_style='mapbox://styles/mapbox/light-v9',
 		initial_view_state=pdk.ViewState(
-			latitude=2.3650,
-			longitude=48.8773,
+			latitude= 48.8773,
+			longitude=2.3650,
 			zoom=11,
 			pitch=50,
 		),
