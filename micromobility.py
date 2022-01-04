@@ -95,13 +95,13 @@ def laod_map_chart(l: list):
 	lat = []
 	lon = []
 	for i, ob in enumerate(l):
-		lat.append(l[i][-1])
-		lon.append(l[i][0])
+		lat.append(l[i][0])
+		lon.append(l[i][-1])
 	
 	data = {'lat':lat, 
 	        'lon':lon
 	} 
-	df = pd.DataFrame(data)
+	df = pd.DataFrame(data, columns = ['lat', 'lon'])
 	df['lat'] = df['lat'].str.strip().replace('None', 0).replace('', 0).astype(float)
 	df['lon'] = df['lon'].str.strip().replace('None', 0).replace('', 0).astype(float)	
 	return df
@@ -134,15 +134,16 @@ with col4:
  
 #df = laod_map_chart(load_map_data(data)).head(738842)
 # Map to show the physical locations of trottinettes.
-df = pd.DataFrame(
-    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
-    columns=['lat', 'lon'])
+#df = pd.DataFrame(
+#    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
+#    columns=['lat', 'lon'])
 
+df = laod_map_chart(load_map_data(data))
 st.pydeck_chart(pdk.Deck(
      map_style='mapbox://styles/mapbox/light-v9',
      initial_view_state=pdk.ViewState(
-         latitude=37.76,
-         longitude=-122.4,
+         latitude=2.3650,
+         longitude=48.8773,
          zoom=11,
          pitch=50,
      ),
