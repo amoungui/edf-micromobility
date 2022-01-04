@@ -135,7 +135,7 @@ with col4:
 #df = laod_map_chart(load_map_data(data)).head(738842)
 # Map to show the physical locations of trottinettes.
 	df = pd.DataFrame(
-		np.random.randn(10000, 2) / [50, 50] + [2.3522219, 48.856614],
+		np.random.randn(10000, 2) / [50, 50] + [48.856614,2.3522219],
 		columns=['lat', 'lon'])
 
 	#df = laod_map_chart(load_map_data(data)).head(1000)
