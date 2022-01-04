@@ -3,4 +3,4 @@ pyxlsb==1.0.9
 matplotlib==3.4.2
 seaborn==0.11.1
 numpy==1.21.0
-pydeck==3.0.3
+pydeck==0.7.1
