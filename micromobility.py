@@ -54,7 +54,7 @@ def plotly_charts(df, labels):
 	box = ax.get_position()
 	ax.set_position([box.x0, box.y0, box.width * 1.3, box.height])
 
-	ax.pie(df, labels=labels, explode=(0, 0.02, 0, 0), autopct = "%0.2f%%")
+	ax.pie(df, labels=labels, explode=(0, 0.04, 0, 0), autopct = "%0.2f%%")
 
 	total = sum(df)
 	plt.legend(
@@ -130,34 +130,36 @@ with col3:
 	st.write(laod_map_chart(load_map_data(data)))
 
 with col4:
-	df = laod_map_chart(load_map_data(data)).head(738842)
-	# Map to show the physical locations of trottinettes.
-	midpoint = (np.average(df['lat']), np.average(df['lon']))
-	st.pydeck_chart(pdk.Deck(
-		map_style='mapbox://styles/mapbox/light-v9',
-		initial_view_state=pdk.ViewState(
-			latitude=midpoint[0],
-			longitude=midpoint[1],
-			zoom=11,
-			pitch=50,
+	st.map(laod_map_chart(load_map_data(data)))
+ 
+df = laod_map_chart(load_map_data(data)).head(738842)
+# Map to show the physical locations of trottinettes.
+midpoint = (np.average(df['lat']), np.average(df['lon']))
+st.pydeck_chart(pdk.Deck(
+	map_style='mapbox://styles/mapbox/light-v9',
+	initial_view_state=pdk.ViewState(
+		latitude=midpoint[0],
+		longitude=midpoint[1],
+		zoom=11,
+		pitch=50,
+	),
+	layers=[
+		pdk.Layer(
+			'HexagonLayer',
+			data=df,
+			get_position='[lon, lat]',
+			radius=200,
+			elevation_scale=4,
+			elevation_range=[0, 1000],
+			pickable=True,
+			extruded=True,
 		),
-		layers=[
-			pdk.Layer(
-				'HexagonLayer',
-				data=df,
-				get_position='[lon, lat]',
-				radius=200,
-				elevation_scale=4,
-				elevation_range=[0, 1000],
-				pickable=True,
-				extruded=True,
-			),
-			pdk.Layer(
-				'ScatterplotLayer',
-				data=df,
-				get_position='[lon, lat]',
-				get_color='[200, 30, 0, 160]',
-				get_radius=200,
-			),
-		],
-	))
+		pdk.Layer(
+			'ScatterplotLayer',
+			data=df,
+			get_position='[lon, lat]',
+			get_color='[200, 30, 0, 160]',
+			get_radius=200,
+		),
+	],
+)) 
