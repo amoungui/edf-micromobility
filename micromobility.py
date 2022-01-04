@@ -54,7 +54,7 @@ def plotly_charts(df, labels):
 	box = ax.get_position()
 	ax.set_position([box.x0, box.y0, box.width * 1.3, box.height])
 
-	ax.pie(df, labels=labels, explode=(0, 0.04, 0, 0), autopct = "%0.2f%%")
+	ax.pie(df, labels=labels, explode=(0, 0.05, 0, 0), autopct = "%0.2f%%")
 
 	total = sum(df)
 	plt.legend(
@@ -95,8 +95,8 @@ def laod_map_chart(l: list):
 	lat = []
 	lon = []
 	for i, ob in enumerate(l):
-		lat.append(l[i][0])
-		lon.append(l[i][-1])
+		lat.append(l[i][-1])
+		lon.append(l[i][0])
 	
 	data = {'lat':lat, 
 	        'lon':lon
@@ -132,34 +132,37 @@ with col3:
 with col4:
 	st.map(laod_map_chart(load_map_data(data)))
  
-df = laod_map_chart(load_map_data(data)).head(738842)
+#df = laod_map_chart(load_map_data(data)).head(738842)
 # Map to show the physical locations of trottinettes.
-midpoint = (np.average(df['lat']), np.average(df['lon']))
+df = pd.DataFrame(
+    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
+    columns=['lat', 'lon'])
+
 st.pydeck_chart(pdk.Deck(
-	map_style='mapbox://styles/mapbox/light-v9',
-	initial_view_state=pdk.ViewState(
-		latitude=midpoint[0],
-		longitude=midpoint[1],
-		zoom=11,
-		pitch=50,
-	),
-	layers=[
-		pdk.Layer(
-			'HexagonLayer',
-			data=df,
-			get_position='[lon, lat]',
-			radius=200,
-			elevation_scale=4,
-			elevation_range=[0, 1000],
-			pickable=True,
-			extruded=True,
-		),
-		pdk.Layer(
-			'ScatterplotLayer',
-			data=df,
-			get_position='[lon, lat]',
-			get_color='[200, 30, 0, 160]',
-			get_radius=200,
-		),
-	],
-)) 
+     map_style='mapbox://styles/mapbox/light-v9',
+     initial_view_state=pdk.ViewState(
+         latitude=37.76,
+         longitude=-122.4,
+         zoom=11,
+         pitch=50,
+     ),
+     layers=[
+         pdk.Layer(
+            'HexagonLayer',
+            data=df,
+            get_position='[lon, lat]',
+            radius=200,
+            elevation_scale=4,
+            elevation_range=[0, 1000],
+            pickable=True,
+            extruded=True,
+         ),
+         pdk.Layer(
+             'ScatterplotLayer',
+             data=df,
+             get_position='[lon, lat]',
+             get_color='[200, 30, 0, 160]',
+             get_radius=200,
+         ),
+     ],
+))
