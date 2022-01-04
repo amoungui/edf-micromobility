@@ -101,8 +101,8 @@ def laod_map_chart(l: list):
 	        'lon':lon
 	} 
 	df = pd.DataFrame(data)
-	df['lat'].str.strip().replace('None', 0).astype(float)
-	df['lon'].str.strip().replace('None', 0).astype(float)	
+	df['lat'] = df['lat'].str.strip().replace('None', 0).replace('', 0).astype(float)
+	df['lon'] = df['lon'].str.strip().replace('None', 0).replace('', 0).astype(float)	
 	return df
 
 s = load_map_data(data)
