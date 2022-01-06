@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 #modification taille de la page
 st.set_page_config(layout="wide")
 
-st.title('EDF: Cas d\'étude de faisabilité du projet MicroMobility')
+st.title('GEMA Lab: Cas d\'étude de faisabilité du projet MicroMobility')
 st.subheader('Etude du taux d\'utilisation/occupation de trottinettes ...')
 st.write("\n\n")
 st.text('Nous avons eu pour étude une base de données Open Data qui repertorie toutes les informations issues des capteurs routiers permettant ainsi de collecter des informations')
-st.text('sur les usages de mobilettes, trottinettes sur la ville de paris il est ainsi question pour nous d\'étudier le taux d\'ocuupation de trottinetes, vélos ..')
+st.text('sur les usages de mobilettes, trottinettes sur la ville de paris il est ainsi question pour nous d\'étudier le taux d\'occupation de trottinetes, vélos ..')
 st.write("\n\n")
 filename = 'data/comptage-multimodal-comptages_trottinettes_binary.xlsb'
 
@@ -126,7 +126,7 @@ with col2:
     st.write(plotly_charts(dt, labels))
 
 st.write("\n\n")
-st.subheader('représentation géo spatial des lieux où l\'on utilise le plus de mobilettes')
+st.subheader('représentation géo spatial des lieux où l\'on utilise le plus de mobilettes(trottinettes)')
 st.write("\n\n")
 
 col3, col4 = st.columns([1, 3])
